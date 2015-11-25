@@ -1,0 +1,52 @@
+-- --------------------------------------------------------
+-- 主机:                           192.168.208.198
+-- 服务器版本:                        5.5.14-log - Source distribution
+-- 服务器操作系统:                      Linux
+-- HeidiSQL 版本:                  8.3.0.4694
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- 导出 ob_shipment 的数据库结构
+CREATE DATABASE IF NOT EXISTS `report2` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `report2`;
+
+
+CREATE TABLE IF NOT EXISTS `CONTAINER_STOCK` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `CONTAINER_NO` varchar(30) DEFAULT NULL COMMENT '容器号',
+  `GOODS_NO` varchar(30) DEFAULT NULL COMMENT 'sku',
+  `GOODS_QTY` int(11) DEFAULT 0 COMMENT 'sku数量',
+  `LOT_ATTR_NO` varchar(100) DEFAULT NULL COMMENT '批次',
+  `GOODS_LEVEL` varchar(20) DEFAULT NULL COMMENT '商品等级',
+  `BUSINESS_DESC` varchar(100) DEFAULT NULL COMMENT '业务描述',
+  `REMARK` varchar(100) DEFAULT NULL COMMENT '备注',
+  `UPDATE_USER` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `UPDATE_TIME` datetime NOT NULL DEFAULT '1900-01-01 00:00:00' COMMENT '更新时间',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='容器商品库存';
+
+CREATE TABLE IF NOT EXISTS `CONTAINER_STOCK_SNAP` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+  `C_ID` bigint(20) DEFAULT NULL COMMENT '容器ID',
+  `CONTAINER_NO` varchar(30) DEFAULT NULL COMMENT '容器号',
+  `GOODS_NO` varchar(30) DEFAULT NULL COMMENT 'sku',
+  `GOODS_QTY` int(11) DEFAULT 0 COMMENT 'sku数量',
+  `LOT_ATTR_NO` varchar(100) DEFAULT NULL COMMENT '批次',
+  `GOODS_LEVEL` varchar(20) DEFAULT NULL COMMENT '商品等级',
+  `BUSINESS_DESC` varchar(100) DEFAULT NULL COMMENT '业务描述',
+  `REMARK` varchar(100) DEFAULT NULL COMMENT '备注',
+  `UPDATE_USER` varchar(20) DEFAULT NULL COMMENT '更新人',
+  `UPDATE_TIME` datetime NOT NULL DEFAULT '1900-01-01 00:00:00' COMMENT '更新时间',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='容器商品库存快照';
+
+CREATE TABLE IF NOT EXISTS `BINLOG_INDEX` (
+  `ID` varchar(200) NOT NULL COMMENT '主键',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='binlog日志同步索引';
+
+

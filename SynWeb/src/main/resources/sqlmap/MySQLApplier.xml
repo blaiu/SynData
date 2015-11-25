@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MySQLApplierMapper">
+
+    <update id="executionSQL" parameterType="java.lang.String">
+    	#{value}
+    </update>
+    
+    <insert id="addSynModel" parameterType="com.jd.ao1.domain.SynModel">
+    	insert into syn_model 
+    	(task_id, task_name, task_type, task_desc,
+    	model_name, model_type, 
+    	token_query_key, token_modify_key, token_call_code, token_uuid,
+    	address, is_start, yn
+    	)
+    	values 
+    	(#{taskId}, #{taskName}, #{taskType}, #{taskDesc},
+    	#{modelName}, #{modelType}, 
+    	#{tokenQueryKey}, #{tokenModifyKey},
+    	#{tokenCallCode}, #{tokenUuid},
+    	#{address}, 0, 0)
+    </insert>
+    
+    <update id="initModifySynModel">
+    	update syn_model set is_start = 0
+    </update>
+    
+    <update id="modifySynModel" parameterType="com.jd.ao1.domain.SynModel">
+    	update syn_model set task_id = task_id
+    	<if test="null != taskName and '' != taskName"> ,task_name = #{taskName} </if>
+    	<if test="null != taskType"> ,task_type = #{taskType} </if>
+    	<if test="null != taskDesc and '' != taskDesc"> ,task_desc = #{taskDesc} </if>
+    	<if test="null != modelName and '' != modelName"> ,model_name = #{modelName} </if>
+    	<if test="null != modelType"> ,model_type = #{modelType} </if>
+    	<if test="null != tokenQueryKey and '' != tokenQueryKey"> ,token_query_key = #{tokenQueryKey} </if>
+    	<if test="null != tokenModifyKey and '' != tokenModifyKey"> ,token_modify_key = #{tokenModifyKey} </if>
+    	<if test="null != tokenCallCode and '' != tokenCallCode"> ,token_call_code = #{tokenCallCode} </if>
+    	<if test="null != tokenUuid and '' != tokenUuid"> ,token_uuid = #{tokenUuid} </if>
+    	<if test="null != address and '' != address"> ,address = #{address} </if>
+    	<if test="null != isStart"> ,is_start = #{isStart} </if>
+    	<if test="null != yn"> ,yn = #{yn} </if>
+    	where id = #{id}
+    </update>
+    
+     <select id="querySynConfig" resultType="com.jd.ao1.domain.SynConfig" parameterType="java.lang.String">
+    	select
+    		id, 
+    	 	task_id taskId, task_type taskType,
+    	 	cron_expression cronExpression, 
+    	 	max_times maxTimes, max_num maxNum
+    	from
+    		syn_config
+    	where 
+    		task_id = #{taskId}
+    </select>
+    
+    <insert id="addSynConfig" parameterType="com.jd.ao1.domain.SynConfig">
+    	insert into syn_config 
+    	(task_id, task_type, cron_expression, max_times, max_num)
+    	values 
+    	(#{taskId}, #{taskType}, #{cronExpression}, #{maxTimes}, #{maxNum})
+    </insert>
+    
+    <update id="modifySynConfig" parameterType="com.jd.ao1.domain.SynConfig">
+    	update syn_config set task_id = task_id
+    	<if test="null != cronExpression"> ,cron_expression = #{cronExpression} </if>
+    	<if test="null != maxTimes"> ,max_times = #{maxTimes} </if>
+    	<if test="null != maxNum"> ,max_num = #{maxNum} </if>
+    	where task_id = #{taskId}
+    </update>
+    
+    <delete id="deleteSynConfig" parameterType="java.lang.String">
+    	delete from syn_config where task_id = #{taskId}
+    </delete>
+    
+    <insert id="addSynRecord" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+    	insert into syn_record (task_id, task_type, times, start_time, update_time, record_id, record_desc, query_count, yn,
+    	org_no, distribute_no, warehouse_no)
+    	values 
+    	<if test="null != list">
+            <foreach collection="list" index="index" item="item" separator=",">
+        	(#{item.taskId}, #{item.taskType}, 0, now(), now(), #{item.recordId}, #{item.recordDesc}, 1, 0, #{orgNo}, #{distributeNo}, #{warehouseNo})
+            </foreach>
+        </if>
+        ON DUPLICATE KEY UPDATE query_count = query_count + 1, update_time = now()
+    </insert>
+    
+    <select id="querySynModel" resultType="com.jd.ao1.domain.SynModel" parameterType="java.util.Map">
+    	select
+    		id, 
+    	 	task_id taskId, task_name taskName, task_type taskType, task_desc taskDesc,
+    	 	model_name modelName, model_type modelType,
+    	 	token_query_key tokenQueryKey, token_modify_key tokenModifyKey,
+    	 	token_call_code tokenCallCode, token_uuid tokenUuid,
+    	 	address, is_start isStart, yn
+    	from
+    		syn_model
+    	where yn = 0
+    	<if test="null != id and '' != id"> and id = #{id} </if>
+    	<if test="null != taskId and '' != taskId"> and task_id = #{taskId} </if>
+    	<if test="null != taskType and '' != taskType"> and task_type = #{taskType} </if>
+    	<if test="null != modelType and '' != modelType"> and model_type = #{modelType} </if>
+    	<if test="null != taskName and '' != taskName"> and task_name like '%${taskName}%' </if>
+    	limit #{startRow}, #{pageSize}
+    </select>
+    
+    <select id="querySynModelCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    	select
+    		count(*)
+    	from
+    		syn_model
+    	where yn = 0
+    	<if test="null != taskId and '' != taskId"> and task_id = #{taskId} </if>
+    	<if test="null != taskType and '' != taskType"> and task_type = #{taskType} </if>
+    	<if test="null != modelType and '' != modelType"> and model_type = #{modelType} </if>
+    	<if test="null != taskName and '' != taskName"> and task_name like '%${taskName}%' </if>
+    </select>
+    
+    <select id="deleteSynModel" parameterType="java.lang.String">
+    	delete from syn_model where task_id = #{taskId}  
+    </select>
+<!--     <select id="deleteSynModel" parameterType="java.util.List"> -->
+<!--     	delete from syn_model -->
+<!--     	where id in   -->
+<!--         <foreach collection="list" item="id" index="index" open="(" close=")" separator=","> -->
+<!--            	#{id} -->
+<!--        	</foreach> -->
+<!--     </select> -->
+    
+    <select id="querySynRecordCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    	select
+    		count(*)
+    	from
+    		syn_record
+    	where yn = 0
+    	<if test="null != taskId and '' != taskId"> and task_id = #{taskId} </if>
+    	<if test="null != taskType and '' != taskType"> and task_type = #{taskType} </if>
+    	<if test="null != maxTimes and '' != maxTimes"> and <![CDATA[ times <= #{maxTimes} ]]> </if>
+    	<if test="null != recordId and '' != recordId"> and record_id = #{recordId} </if>
+    </select>
+    
+    <select id="querySynRecord" resultType="com.jd.ao1.domain.SynRecord" parameterType="java.util.Map">
+    	select
+    		id,
+    		task_id taskId, task_type taskType,
+    		times,
+    		start_time startTime,
+    		record_id recordId, record_desc recordDesc,
+    		query_count queryCount, yn,
+    		org_no orgNo, distribute_no distributeNo, warehouse_no warehouseNo
+    	from
+    		syn_record
+    	where yn = 0
+   		<if test="null != id and '' != id"> and id = #{id} </if>
+   		<if test="null != taskId and '' != taskId"> and task_id = #{taskId} </if>
+   		<if test="null != taskType and '' != taskType"> and task_type = #{taskType} </if>
+   		<if test="null != maxTimes and '' != maxTimes"> and <![CDATA[ times <= #{maxTimes} ]]> </if>
+   		<if test="null != recordId and '' != recordId"> and record_id = #{recordId} </if>
+    	limit #{startRow}, #{pageSize}
+    </select>
+    
+    <select id="deleteSynRecord" parameterType="java.util.List">
+    	delete from syn_record
+    	where id in  
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+           	#{id}
+       	</foreach>
+    </select>
+    
+    <select id="updateSynRecord" parameterType="java.util.List">
+    	update syn_record times = times + 1
+    	where id in  
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+           	#{id}
+       	</foreach>
+    </select>
+    
+</mapper>

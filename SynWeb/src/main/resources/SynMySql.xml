@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<mappings>
+		
+		<mapping srcTable="T_MB_COUPONS_DETAIL" targetTable="coupons" type = "+" memo = "" operate = "">
+			
+			<rowkey separator="">
+				<parts srcColumn="MEMBER_ID" targetColumn = "" type="" />	
+			</rowkey>
+			
+			<!-- 优惠券方案ID -->
+			<column 
+			srcColumn="COUPONS_PROGRAM_ID" targetColumn="COUPONS_PROGRAM_ID" 
+			srcType = "1" targetType="12" 
+			cacheTable = "2" cachekey = "21" cacheValue = "22"
+			dateFormat = "3"
+			version = "4"/>
+		</mapping>
+		
+	</mappings>
+</configuration>

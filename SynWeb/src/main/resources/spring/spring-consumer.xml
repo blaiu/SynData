@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:saf="http://code.360buy.com/schema/saf" xmlns:mq="http://code.360buy.com/schema/mq"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.360buy.com/schema/saf 
+	http://code.360buy.com/schema/saf/saf.xsd
+	http://code.360buy.com/schema/mq 
+	http://code.360buy.com/schema/mq/mq-1.0.xsd
+	" default-autowire="byName">
+
+	<saf:reference id="retryService"
+		interface="com.jd.activemq.retry.service.RetryService" version="1.0.0"
+		group="MQ" timeout="10000" check="false" url="${saf.url}"/>
+
+	<mq:retryContainer id="retryContainer" retryService="retryService" />
+	
+	<!-- 线上环境 address="failover://(registry://;http://;file://)"，如果特殊需要可灵活配置address -->
+	<mq:connectionFactory id="connectionFactory" user="${mq.userName}"
+		password="${mq.password}" address="${zk.url}" systemId="${mq.systemId}"
+		prefetch="100" maximumRedeliveries="2" alwaysSyncSend="true"/>
+
+	<mq:consumerListener id="consumer"
+		connectionFactory="connectionFactory" concurrency="${mq.concurrency}"
+		exceptionListener="retryContainer" autoStart="true">
+	</mq:consumerListener>
+
+	<!-- 动态配置消费者 -->
+	<bean id="dynamicConsumer" class="taskengine_client.mq.DynamicConsumer" init-method="startListener">
+		<property name="handlers" ref="outcheckHandlers" />
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="consumer" ref="consumer" />
+	</bean>
+	
+	<!-- 消息处理类集 -->
+	<bean id="outcheckHandlers" class="java.util.HashMap">
+		<constructor-arg>
+			<map>
+				<entry key="checkHandler" value-ref="outcheckHandler" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+    <bean id="outcheckHandler" class="taskengine_client.mq.TaskListener">
+        <property name="taskHandler" ref="receiveMQ"/>
+    </bean>
+
+</beans>

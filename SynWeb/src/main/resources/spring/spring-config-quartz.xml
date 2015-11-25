@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+
+		<bean id="simpleService" class="com.jd.ao1.syn.service.worker.SimpleService"/>
+		<bean id="schedulerService" class="com.jd.ao1.syn.service.worker.SchedulerServiceImpl"/>
+		<bean id="myQuartzJobBean" class="com.jd.ao1.syn.service.worker.MyQuartzJobBean" scope="prototype"/>
+
+		<bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+			<property name="applicationContextSchedulerContextKey"  value="applicationContextKey"/>
+			<property name="configLocation" value="classpath:properties/quartz.properties"/>
+		</bean>
+		
+		<bean id="jobDetailImpl" class="org.springframework.scheduling.quartz.JobDetailFactoryBean" scope="prototype">
+			<property name="jobClass" value="com.jd.ao1.syn.service.worker.MyQuartzJobBean"/>
+			<property name="jobDataAsMap">
+				<map>
+					<entry key="simpleService" value-ref="simpleService"/>
+				</map>
+			</property>
+		</bean>
+
+</beans>

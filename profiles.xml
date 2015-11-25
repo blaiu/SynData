@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<profilesXml xmlns="http://maven.apache.org/PROFILES/1.0.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.org/xsd/profiles-1.0.0.xsd">
+    <profiles>   
+        <profile>
+            <id>gz-dev</id>
+            <properties>
+            	<!-- 日志配置 -->
+                <wms3-check.log.level>ERROR</wms3-check.log.level>
+                <wms3-check.log.path>/export/Logs/mc.ao2.jd.com/server1/logs</wms3-check.log.path>
+                
+                <!-- 数据库及连接池配置 -->
+                <mvn.mysql.driver>com.mysql.jdbc.Driver</mvn.mysql.driver>
+                <mvn.mysql.url>jdbc:mysql://192.168.158.94:3358/masterbasic</mvn.mysql.url>
+                <mvn.mysql.username>aos2</mvn.mysql.username>
+                <mvn.mysql.password>aos2</mvn.mysql.password>
+<!--                 <mvn.mysql.url>jdbc:mysql://192.168.158.94:3358/ob_shipment</mvn.mysql.url> -->
+<!--                 <mvn.mysql.username>ob_shipment_rw</mvn.mysql.username> -->
+<!--                 <mvn.mysql.password>ob_shipment_rw</mvn.mysql.password> -->
+                <mvn.mysql.connectionProperties>useUnicode=true;characterEncoding=utf8;initialTimeout=3;connectTimeout=3000;socketTimeout=6000;rewriteBatchedStatements=true;autoReconnectForPools=true;autoReconnect=true;maxReconnects=1;failOverReadOnly=false;roundRobinLoadNalance=true</mvn.mysql.connectionProperties>
+                
+                <mvn.mysql.initialSize>2</mvn.mysql.initialSize>
+                <mvn.mysql.minIdle>2</mvn.mysql.minIdle>
+                <mvn.mysql.maxIdle>16</mvn.mysql.maxIdle>
+                <mvn.mysql.maxActive>16</mvn.mysql.maxActive>
+                <mvn.mysql.maxWait>10000</mvn.mysql.maxWait>
+                
+                <mvn.mysql.defaultAutoCommit>true</mvn.mysql.defaultAutoCommit>
+                
+                <mvn.mysql.validationQuery>select count(1) from dual </mvn.mysql.validationQuery>
+                <mvn.mysql.testWhileIdle>true</mvn.mysql.testWhileIdle>
+                <mvn.mysql.testOnReturn>false</mvn.mysql.testOnReturn>
+                <mvn.mysql.testOnBorrow>false</mvn.mysql.testOnBorrow>
+                <mvn.mysql.timeBetweenEvictionRunsMillis>3000</mvn.mysql.timeBetweenEvictionRunsMillis>
+                <mvn.mysql.minEvictableIdleTimeMillis>1800000</mvn.mysql.minEvictableIdleTimeMillis>
+                <mvn.mysql.numTestsPerEvictionRun>16</mvn.mysql.numTestsPerEvictionRun>
+                
+                <mvn.mysql.logAbandoned>true</mvn.mysql.logAbandoned>
+                <mvn.mysql.removeAbandoned>true</mvn.mysql.removeAbandoned>
+                <mvn.mysql.removeAbandonedTimeout>180</mvn.mysql.removeAbandonedTimeout>
+                
+                <!-- MQ配置 -->
+				<mvn.saf.url>dubbo://192.168.179.67:20880</mvn.saf.url>
+				<mvn.zk.url>zookeeper://192.168.179.67:2181</mvn.zk.url>
+                <mvn.mq.userName>mq</mvn.mq.userName>
+                <mvn.mq.password>mq</mvn.mq.password>
+                <mvn.mq.systemId>WMSAOS2</mvn.mq.systemId>
+                <mvn.mq.concurrency>1-5</mvn.mq.concurrency>
+                
+                <mvn.orgNo>10</mvn.orgNo>
+                <mvn.destinationNo>10</mvn.destinationNo>
+                <mvn.warehouseNo>98</mvn.warehouseNo>
+                
+                <!-- 任务引擎配置 -->
+                <mvn.taskEngine.bizType>allocationTask</mvn.taskEngine.bizType>
+                <mvn.taskEngine.uuid>100</mvn.taskEngine.uuid>
+                <mvn.taskEngine.callCode>360BUY.WMS3.WS.CALLCODE.100</mvn.taskEngine.callCode>
+                <mvn.taskEngine.bizType.receive>queryConsumerSettingConf</mvn.taskEngine.bizType.receive>
+                <mvn.taskEngine.address>http://task-worker.ao2.jd.net/services/simpleWebServiceSoap</mvn.taskEngine.address>
+            </properties>
+        </profile>
+        
+    </profiles>
+    
+</profilesXml>

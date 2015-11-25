@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws 
+	http://cxf.apache.org/schemas/jaxws.xsd" default-autowire="byName" >
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+    <bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+    <bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+
+    <bean id="simpleWebService" class="com.jd.wms.service.ws.impl.SimpleWebServiceImpl">
+        <property name="callCodeList">
+            <list>
+                <value>360BUY.WMS3.WS.CALLCODE.1</value>
+            </list>
+        </property>
+        <property name="bizMap">
+            <map>
+                <entry key="SPLIT_RULES" value=","/>
+                <entry key="PARAM_SIZE" value="4"/>
+                <entry key="SERVICE_RULES" value="SPRING_CONTENT"/>
+
+            
+<!--             	<entry key="getCancelOrderStatus" value="orderStatusService,getCancelOrderStatus,2,java.lang.String"/> -->
+            </map>
+        </property>
+    </bean>
+
+    <jaxws:server id="synWeb" address="/synWeb">
+        <jaxws:serviceBean><ref bean="simpleWebService" /></jaxws:serviceBean>
+        <jaxws:inInterceptors><ref bean="logIn"/></jaxws:inInterceptors>
+        <jaxws:outInterceptors><ref bean="logOut"/></jaxws:outInterceptors>
+    </jaxws:server>
+
+</beans>

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.jd.syn</groupId>
+    <artifactId>SynData</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+<!--   <groupId>com.jd.wms</groupId> -->
+  <artifactId>SynService</artifactId>
+<!--   <version>0.0.1-SNAPSHOT</version> -->
+  <name>SynService</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+  	<dependency>
+  		<groupId>com.jd.syn</groupId>
+  		<artifactId>SynManager</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+<!--   	<dependency> -->
+<!--         <groupId>com.jd.wms3</groupId> -->
+<!--         <artifactId>wms3-taskEngine-client</artifactId> -->
+<!--         <version>1.0.2-SNAPSHOT</version> -->
+<!--         <exclusions> -->
+<!--               <exclusion> -->
+<!--                   <groupId>com.jd.activemq</groupId> -->
+<!--                   <artifactId>activemq-client</artifactId> -->
+<!--               </exclusion> -->
+<!-- 		</exclusions> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!-- 	    <groupId>com.jd.activemq</groupId> -->
+<!-- 	    <artifactId>activemq-client-spring</artifactId> -->
+<!-- 	    <version>4.4.2</version> -->
+<!-- 	    <exclusions> -->
+<!-- 	    	<exclusion> -->
+<!-- 	          <groupId>org.springframework</groupId> -->
+<!-- 	          <artifactId>spring-beans</artifactId> -->
+<!-- 	    	</exclusion> -->
+<!-- 	    	<exclusion> -->
+<!--                    <groupId>com.jd.ump</groupId> -->
+<!--                    <artifactId>profiler</artifactId> -->
+<!--                </exclusion> -->
+<!-- 	    </exclusions> -->
+<!-- 	</dependency> -->
+	
+     <dependency>
+         <groupId>com.jd.ao1</groupId>
+         <artifactId>wms-common-service</artifactId>
+         <version>2.0-SNAPSHOT</version>
+         <exclusions>
+			<exclusion>
+	           <groupId>aspectj</groupId>
+	       	   <artifactId>aspectjweaver</artifactId>
+	    	</exclusion>
+	    	<exclusion>
+	           <groupId>com.jd.bk.common</groupId>
+	       	   <artifactId>jd-bk-common-util</artifactId>
+	    	</exclusion>
+	    </exclusions>
+     </dependency>
+     
+<!--      <dependency> -->
+<!--          <groupId>org.opensymphony.quartz</groupId> -->
+<!--          <artifactId>quartz</artifactId> -->
+<!--          <version>1.6.1</version> -->
+<!--      </dependency> -->
+
+	<dependency>
+	    <groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz</artifactId>
+	    <version>2.2.1</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz-jobs</artifactId>
+	    <version>2.2.1</version>
+	</dependency>
+  </dependencies>
+</project>

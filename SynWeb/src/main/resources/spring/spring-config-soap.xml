@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <bean id="bizToken" class="com.jd.wms.domain.ws.receivemessage.param.BizToken" scope="prototype"/>
+
+    <!-- 任务引擎WebService服务 -->
+    <bean id="wms3MessageRpc" class="com.jd.wms.rpc.wms3message.service.impl.Wms3MessageRpcImpl"/>
+<!--         <property name="clientWebServiceSoap" ref="baseWebServiceSoap"/> -->
+<!--     </bean> -->
+<!--     <bean id="baseWebServiceSoap" -->
+<!--           class="com.jd.wms.rpc.wms3message.clientbean.BaseWebService" -->
+<!--           factory-bean="jaxWsProxyFactoryBean" -->
+<!--           factory-method="create"/> -->
+
+    <bean id="jaxWsProxyFactoryBean" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean" scope="prototype">
+        <property name="serviceClass" value="com.jd.wms.rpc.wms3message.clientbean.BaseWebService"/>
+<!--         <property name="address" value="${taskEngine.address}"/> -->
+        <property name="inInterceptors">
+            <list>
+                <ref bean="logIn"/>
+            </list>
+        </property>
+        <property name="outInterceptors">
+            <list>
+                <ref bean="logOut"/>
+                <ref bean="wms3SOAPHeaderIntercepter"/>
+            </list>
+        </property>
+    </bean>
+    <!-- 任务引擎WebService服务 -->
+    
+    <!-- WebService共用配置 -->
+    <bean id="wms3SOAPHeaderIntercepter" class="com.jd.bk.common.ws.SOAPHeaderIntercepter">
+        <property name="authHeader" ref="wms3SOAPHeader"/>
+    </bean>
+    <bean id="wms3SOAPHeader" class="com.jd.bk.common.ws.AuthHeader">
+        <property name="qName" value="http://wms3.360buy.com"/>
+        <property name="content" value=""/>
+        <property name="seed" value=""/>
+    </bean>
+    <bean id="logIn" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <bean id="logOut" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+    <!-- WebService共用配置 -->
+</beans>

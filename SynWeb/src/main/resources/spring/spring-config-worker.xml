@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws
+	http://cxf.apache.org/schemas/jaxws.xsd" default-autowire="byName">
+
+    
+<!--     <bean id="receiveWorker" class="com.jd.syn.service.worker.ReceiveWorker" init-method="init"> -->
+<!--     	<property name="orgNo" value="${orgNo}"/> -->
+<!--     	<property name="destinationNo" value="${destinationNo}"/> -->
+<!--     	<property name="warehouseNo" value="${warehouseNo}"/> -->
+    
+<!--     </bean> -->
+    
+<!--     <bean id="jobTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
+<!--          <property name="targetObject" ref="receiveWorker"/> -->
+<!--          <property name="targetMethod" value="execute"/> -->
+<!--     </bean> -->
+    
+<!--     <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerBean"> -->
+<!--          <property name="jobDetail" ref="jobTask"/> -->
+<!--        	 <property name="cronExpression" value="0 0/15 * * * ?" /> -->
+<!--     </bean> -->
+    
+<!--     <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> -->
+<!--         <property name="startupDelay" value="300"/> -->
+<!--         <property name="triggers"> -->
+<!--             <list> -->
+<!--                 <ref bean="doTime"/> -->
+<!--             </list> -->
+<!--         </property> -->
+<!--     </bean> -->
+    
+</beans>
